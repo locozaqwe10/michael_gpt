@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.oswaldTextTheme(),
-        colorScheme: .fromSeed(seedColor: ColorPrimary),
+        colorScheme: .fromSeed(seedColor: ColorPrimary, ),
         hintColor: ColorSecandory,
+
 
 
       ),
