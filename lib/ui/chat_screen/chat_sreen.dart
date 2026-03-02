@@ -3,13 +3,50 @@ import 'package:custom_chat_gpt/utilities/colors.dart';
 import 'package:custom_chat_gpt/widgets/chat_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../utilities/hive/user_hive_model.dart';
+import '../../widgets/chat_bubble_message.dart';
+import '../../widgets/circular_letter_avatar.dart';
+import 'chat_list.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
+class ChatScreen  extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => _ChatScreen();
+}
 
+class _ChatScreen extends State {
+
+  UserHiveModel? hiveUser ;
+  bool _isLoading =false;
+  String userName = "";
+  String subscription = "";
+  String subscriptionName = "";
+  late Box userBox;
+  int refresh = 0;
+
+  @override
+  initState()  {
+    // TODO: implement initState
+    super.initState();
+    userBox = Hive.box<UserHiveModel>('userBox');
+    populateValues();
+
+
+
+  }
+ populateValues() async {
+   hiveUser = await userBox.get("currentUser");
+   userName = hiveUser!.getUserName;
+   subscriptionName = hiveUser!.getSubscriptionFriendlyName;
+   setState(() {
+
+   });
+ }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         backgroundColor: ColorPrimary,
@@ -37,15 +74,19 @@ class ChatScreen extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: ColorPrimary),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=me'),
-              ),
-              accountName: const Text("Your Name", style: TextStyle(fontWeight: FontWeight.bold)),
-              accountEmail: const Text("Premium Member"),
+              currentAccountPicture:   circularAvatar(name:userName),
+              accountName:  Text(userName +"-", style: TextStyle(fontWeight: FontWeight.bold)),
+              accountEmail:  Text(subscriptionName),
             ),
 
             ListTile(
               leading: const Icon(Icons.chat_bubble_outline),
+              title: const Text("New Chat"),
+              onTap: () { Navigator.pushReplacementNamed(context,RouteNames.ChatScreen);},
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.history),
               title: const Text("Chat History"),
               onTap: () { Navigator.pushNamed(context, RouteNames.ChatHistoryScreen);},
             ),
@@ -64,7 +105,11 @@ class ChatScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.redAccent),
               title: const Text("Logout", style: TextStyle(color: Colors.redAccent)),
-              onTap: () {Navigator.pushNamedAndRemoveUntil(
+              onTap: () {
+
+                Box   userBox = Hive.box<UserHiveModel>('userBox');
+                userBox.clear();
+                Navigator.pushNamedAndRemoveUntil(
                 context,
                 RouteNames.LoginScreen, // Replace with your actual route name
                     (Route<dynamic> route) => false,
@@ -76,119 +121,54 @@ class ChatScreen extends StatelessWidget {
         ),
       ),
       // --- CHAT INTERFACE ---
-      body: Column(
-        children: [
-
-
-
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: const [
-                ChatBubble(
-                  message: "How do I differentiate my business?",
-                  isMe: false,
-                  time: "10:18 AM",
-                ),
-                ChatBubble(
-                  message: "You need to find your own playground where no one else is playing. Please tell me more about your business (ideas) and we can discuss further.",
-                  isMe: true,
-                  time: "10:19 AM",
-                ),
-                Visibility(
-                  visible: false,
-
-                  child: ChatBubble(
-                    message: "Almost there!",
-                    isMe: true,
-                    time: "10:20 AM",
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // --- INPUT FIELD ---
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-            ),
-            child: SafeArea(
-              child: Row(
-                children: [
-                  const Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Type a message...",
-                        hintStyle: TextStyle(
-                          color: SubColorSecandory,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+        
+        
+        
+            ChatList( refresh),
+            // --- INPUT FIELD ---
+          /*  Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+              ),
+              child: SafeArea(
+                child: Row(
+                  children: [
+                    const Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Type a message...",
+                          hintStyle: TextStyle(
+                            color: SubColorSecandory,
+                          ),
+                          border: InputBorder.none,
                         ),
-                        border: InputBorder.none,
                       ),
                     ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: ColorPrimary,
-                      shape: BoxShape.circle,
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: ColorPrimary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.send, color: Colors.white, size: 20),
+                        onPressed: () {},
+                      ),
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.send, color: Colors.white, size: 20),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ),*/
+          ],
+        ),
       ),
     );
   }
 }
 
-class ChatBubble extends StatelessWidget {
-  final String message;
-  final bool isMe;
-  final String time;
-
-  const ChatBubble({super.key, required this.message, required this.isMe, required this.time});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-            decoration: BoxDecoration(
-              color: isMe ?  Color(0xFF007AFF) :  ColorPrimary,
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(16),
-                topRight: const Radius.circular(16),
-                bottomLeft: Radius.circular(isMe ? 16 : 0),
-                bottomRight: Radius.circular(isMe ? 0 : 16),
-              ),
-            ),
-            child: Text(
-              message,
-              style: TextStyle(
-                color: isMe ? Colors.white : Colors.white,
-                fontSize: 15,
-              ),
-            ),
-          ),
-          Text(time, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-}

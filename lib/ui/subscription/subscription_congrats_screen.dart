@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
 
+import '../../routes/routes_name.dart';
+import '../../utilities/colors.dart';
+
 class PremiumSuccessScreen extends StatefulWidget {
   const PremiumSuccessScreen({super.key});
 
@@ -12,10 +15,12 @@ class PremiumSuccessScreen extends StatefulWidget {
 class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
   late ConfettiController _topController;
   late ConfettiController _bottomController;
+  String membership = "Premium";
 
   @override
   void initState() {
     super.initState();
+
     _topController = ConfettiController(duration: const Duration(seconds: 3));
     _bottomController = ConfettiController(duration: const Duration(seconds: 3));
 
@@ -24,6 +29,8 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
       _topController.play();
       _bottomController.play();
     });
+
+
   }
 
   @override
@@ -35,6 +42,11 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    int UsercurrentSubscription =  args['subscription'];
+ String subFriendlyname =    UsercurrentSubscription==1?"Free Trail":UsercurrentSubscription==2?"Standart":UsercurrentSubscription==3?"Premium+":"";
+
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FC),
       body: Stack(
@@ -130,26 +142,26 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                       color: Colors.green.withOpacity(0.08),
                     ),
                     child: Row(
-                      children: const [
-                        CircleAvatar(
+                      children: [
+                        const CircleAvatar(
                           backgroundColor: Colors.green,
                           child: Icon(Icons.check, color: Colors.white),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Payment Received',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
-                                'Your premium features are now active',
-                                style: TextStyle(color: Colors.grey),
+                                'Your $subFriendlyname features are now active',
+                                style: const TextStyle(color: Colors.grey),
                               ),
                             ],
                           ),
@@ -174,8 +186,9 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                   _featureTile(
                     icon: Icons.chat_bubble_outline,
                     color: Colors.purple,
-                    title: 'Unlimited Messages',
-                    subtitle: 'Chat as much as you want, no daily limits',
+
+                    title: '$subFriendlyname Package',
+                    subtitle: 'Chat as much as you want.',
                   ),
 
                   _featureTile(
@@ -183,6 +196,40 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                     color: Colors.blue,
                     title: 'Priority Speed',
                     subtitle: 'Faster responses anytime',
+                  ),
+
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        colors: [ColorPrimary, Colors.purple],
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouteNames.ChatScreen,
+                          );
+                          // TODO: handle account creation
+                        },
+                        child: Center(
+                          child: const Text(
+                            "Let's Start Chat with Michael GPT",
+
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

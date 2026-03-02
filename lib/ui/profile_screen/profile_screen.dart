@@ -1,12 +1,29 @@
 import 'package:custom_chat_gpt/routes/routes_name.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+import '../../utilities/hive/user_hive_model.dart';
+import '../../widgets/circular_letter_avatar.dart';
 
+class ProfileScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => _ProfileScreen();
+
+}
+
+class _ProfileScreen extends State {
+   Box userBox = Hive.box<UserHiveModel>('userBox');
+   late UserHiveModel hiveUser ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hiveUser =  userBox.get("currentUser");
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
 
@@ -31,11 +48,11 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _profileImageCard(),
+            circularAvatar(name: hiveUser.getUserName),
             const SizedBox(height: 16),
             _profileInfoCard(),
             const SizedBox(height: 16),
-            _subscriptionCard(context),
+            _subscriptionCard(context, hiveUser.subscriptionFriendlyName),
             const SizedBox(height: 24),
             _logoutButton(),
           ],
@@ -96,25 +113,26 @@ class ProfileScreen extends StatelessWidget {
                 "Profile Information",
                 style: TextStyle(fontWeight: FontWeight.bold, color: ColorSecandory),
               ),
-              Icon(Icons.edit, color:ColorSecandory),
+
             ],
           ),
           const SizedBox(height: 16),
           _inputField(
             icon: Icons.person_outline,
-            hint: "Full Name",
+            hint: hiveUser.getUserName,
+
           ),
           const SizedBox(height: 12),
           _inputField(
             icon: Icons.email_outlined,
-            hint: "Email",
+            hint: hiveUser.getEmail,
           ),
         ],
       ),
     );
   }
 
-  Widget _subscriptionCard(BuildContext context) {
+  Widget _subscriptionCard(BuildContext context, String subName) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: _cardDecoration(),
@@ -134,14 +152,14 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "Free Plan",
-                  style: TextStyle(fontWeight: FontWeight.w600, color: ColorPrimary),
+                  subName ,
+                  style: const TextStyle(fontWeight: FontWeight.w600, color: ColorPrimary),
                 ),
                 Text(
-                  "Limited features",
-                  style: TextStyle(color: Colors.grey),
+                  hiveUser.subscriptionFriendlyName=="Free"?"Free features": hiveUser.subscriptionFriendlyName=="Standard"?"Limited Features": hiveUser.subscriptionFriendlyName=="Premium+"?"Full Features":"",
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ],
             ),
@@ -185,7 +203,12 @@ class ProfileScreen extends StatelessWidget {
           "Log Out",
           style: TextStyle(color: ColorSecandory),
         ),
-        onPressed: () {},
+        onPressed: () {
+
+           Box   userBox = Hive.box<UserHiveModel>('userBox');
+           userBox.clear();
+           Navigator.pushNamed(context, RouteNames.LoginScreen);
+        },
       ),
     );
   }
@@ -195,6 +218,7 @@ class ProfileScreen extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: ColorPrimary),
         hintText: hint,
+
         filled: true,
         fillColor: const Color(0xFFF2F2F2),
         border: OutlineInputBorder(

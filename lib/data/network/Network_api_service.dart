@@ -13,7 +13,7 @@ class NetworkApiService extends BaseApiService {
     try {
       final response = await http.get(Uri.parse(url)).timeout(Duration(seconds: 10));
       print(response.toString());
-      responseJson = returnResponse(response);
+      responseJson = response;
 
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -27,13 +27,14 @@ class NetworkApiService extends BaseApiService {
     // TODO: implement getPostApiResponse
     dynamic responseJson;
     try {
+      print (jsonEncode(data));
       Response response = await http.post(
         Uri.parse(url),
-        body: data,
-        headers: {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"},
-      ).timeout(Duration(seconds: 10));
+        body: jsonEncode(data),
+        headers: {"Accept": "application/json", "Content-Type": "application/json"},
+      ).timeout(Duration(seconds: 30));
       print(response.body.toString());
-      responseJson = returnResponse(response);
+      responseJson = response;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
@@ -58,10 +59,10 @@ class NetworkApiService extends BaseApiService {
       Response response = await http.post(
         Uri.parse(url),
 
-        headers: {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"},
+        headers: {"Accept": "application/json", "Content-Type": "application/json"},
       ).timeout(Duration(seconds: 10));
 
-      responseJson = returnResponse(response);
+      responseJson = response;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }

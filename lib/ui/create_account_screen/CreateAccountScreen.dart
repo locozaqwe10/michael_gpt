@@ -1,4 +1,7 @@
+import 'package:custom_chat_gpt/routes/routes_name.dart';
+import 'package:custom_chat_gpt/ui/create_account_screen/create_account_viewmodel.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
+import 'package:custom_chat_gpt/utilities/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/social_button.dart';
@@ -15,7 +18,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
+ final CreateAccountViewmodel createAccountViewmodel = CreateAccountViewmodel();
+  bool _isLoading = false;
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,11 +167,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     colors: [ColorPrimary, ColorSecandory],
                   ),
                 ),
-                child: Material(
+                child:  _isLoading  ? Center(child: CircularProgressIndicator(color: Colors.white,)):Material(
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {
+                    onTap: () async {
                       if (!agreedToTerms) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -176,6 +181,42 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         return;
                       }
                       // TODO: handle account creation
+                      if (_fullNameController.text.isNotEmpty &&
+                      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty
+                      && _confirmPasswordController.text.isNotEmpty){
+
+                        if (_confirmPasswordController.text == _passwordController.text) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                  var    response =  await  createAccountViewmodel.createUser({
+                            "email": _emailController.text,
+                            "first_name": _fullNameController.text,
+                            "last_name": "",
+                            "password": _confirmPasswordController.text,
+                          });
+                          setState(() {
+                            _isLoading = false;
+                          });
+                      if (response.code == 200){
+                        mUtils.toastMessage(response.message);
+                        Navigator.pushNamed(context, RouteNames.LoginScreen);
+                      }else {
+
+                        mUtils.toastMessage(response.message);
+                      }
+
+
+                        }else {
+                          mUtils.toastMessage("Password and confirm password does not match ");
+                        return ;
+                        }
+                      }else {
+
+                        mUtils.toastMessage("Please fill all the fields");
+                        return;
+                      }
+
                     },
                     child: Center(
                       child: Text(

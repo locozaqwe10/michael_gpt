@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:custom_chat_gpt/routes/routes_name.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
+import 'package:custom_chat_gpt/utilities/hive/user_hive_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 
 
 
@@ -24,10 +26,33 @@ class _SubSplashScreen extends State {
 
   bool isLightTheam = false;
   String assetsLogo = "assets/images/logo_white_text.png";
+
+  var  box =Hive.box<UserHiveModel>('userBox');
+
+  Future<void>  _saveuser() async {
+
+
+    /*final user = UserHiveModel(
+      userId: "123",
+      email: "test@mail.com",
+      userName: "Nauman", subscriptionId: '', subscriptionInTokenAllowed: 0, subscriptionOutTokenAllowed: 0, userInToken: 0, userOutToken: 0,
+    );
+  await box.put('currentUser', user);*/
+  }
+
+
+  @override
+  void initState() {
+  super.initState();
+  Future.microtask(() => _saveuser());
+  }
+
   @override
   Widget build(BuildContext context) {
     // Colors for the feature icons
     final featureColors = [Colors.purple, Colors.blue, Colors.green];
+
+
 
     // Feature data
     final features = [
@@ -58,6 +83,8 @@ class _SubSplashScreen extends State {
 
       assetsLogo = "assets/images/logo_white_text.png";
     }
+
+
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop(); // closes the app
@@ -267,8 +294,20 @@ backgroundColor:  isLightTheam ? Colors.white : Colors.black,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {
-                              Navigator.pushNamed(context, RouteNames.LoginScreen);
+                            //
                               // TODO: handle account creation
+
+                           var users =  box.get('currentUser');
+                           print(users?.getEmail);
+                           if (users?.getEmail!=null){
+                             if (users!.getEmail.isNotEmpty) {
+                               Navigator.pushNamed(context, RouteNames.ChatScreen);
+                             } else {
+                               Navigator.pushNamed(context, RouteNames.LoginScreen);
+                             }
+                           }else{
+                             Navigator.pushNamed(context, RouteNames.LoginScreen);
+                           }
                             },
                             child: Row(
 

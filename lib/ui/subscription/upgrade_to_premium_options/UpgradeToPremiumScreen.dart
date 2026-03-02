@@ -1,9 +1,37 @@
+import 'package:custom_chat_gpt/model/general_response.dart';
+import 'package:custom_chat_gpt/model/payment_model.dart';
 import 'package:custom_chat_gpt/routes/routes_name.dart';
+import 'package:custom_chat_gpt/ui/subscription/upgrade_to_premium_options/subscription_viewmodel.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
+import 'package:custom_chat_gpt/utilities/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hive/hive.dart';
 
-class UpgradeToPremiumScreen extends StatelessWidget {
-  const UpgradeToPremiumScreen({super.key});
+import '../../../utilities/hive/user_hive_model.dart';
+
+
+class UpgradeToPremiumScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => _UpgradeToPremiumScreen();
+
+}
+
+
+class _UpgradeToPremiumScreen extends State {
+
+  late Box userBox = Hive.box<UserHiveModel>('userBox');
+  SubscriptionViewmodel viewmodel = SubscriptionViewmodel();
+  int UsercurrentSubscription = -1;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    callUserSubScription();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,32 +114,128 @@ class UpgradeToPremiumScreen extends StatelessWidget {
               crossAxisSpacing: 16,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                PremiumFeatureCard(
-                  icon: Icons.chat_bubble_outline,
-                  title: '14 days Free Trail',
-                  color: Colors.purple,
-                  onTap:(){
 
-                    Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);
-                  },
+                Stack(
+                    children: [
+                     SizedBox(
+                       width: 200,
+                       child: PremiumFeatureCard(
+                        icon: Icons.chat_bubble_outline,
+                        title: '14 days Free Trail',
+                        color: Colors.purple,
+                        onTap:() {
+                          if (UsercurrentSubscription != 1)
+                            {
+                            mUtils.toastMessage(
+                                "You opt the free tier and your package has been downgraded if any updated. ");
+
+                            showBottomModal(context, "You are opting 14 Day free Trail, it will downgrade if you have any other subcription with Miachle GPT", 1,0
+                            );
+                        }else {
+                            mUtils.toastMessage(
+                                "You  have the same package");
+                          }
+                          // Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);
+                        },
+                                           ),
+                     ),
+                      UsercurrentSubscription==1?Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+
+                          child: Row(
+                            children: [
+                              Icon(Icons.check_circle, color: CupertinoColors.activeGreen,size: 30,),
+                              Text("Your active package", style: TextStyle(color: CupertinoColors.activeGreen,),)
+                            ],
+                          ),
+                        ),
+                      ):SizedBox(height: 0,),
+                    ]
+                  ),
+
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: PremiumFeatureCard(
+                        icon: Icons.flash_on,
+                        title: "\99/month \n 10,000,000 input and output token per day",
+                        color: Colors.blue,
+                        onTap:(){
+                          if (UsercurrentSubscription != 2)
+                          {
+                            showBottomModal(context,"Do you really want to subscribed for the Standard Package access at \$99",2, 99);
+                          }else {
+                            mUtils.toastMessage(
+                                "You already have this package scripted ");
+                          }
+
+                         // Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);
+                          },
+                      ),
+                    ),
+
+                    UsercurrentSubscription==2?Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+
+                        child: Row(
+                          children: [
+                            Icon(Icons.check_circle, color: CupertinoColors.activeGreen,size: 30,),
+                            Text("Your active package", style: TextStyle(color: CupertinoColors.activeGreen,),)
+                          ],
+                        ),
+                      ),
+                    ):SizedBox(height: 0,),
+                  ],
                 ),
-                PremiumFeatureCard(
-                  icon: Icons.flash_on,
-                  title: "\$999/Year \n Unlimited access and discount on year payment ",
-                  color: Colors.blue,
-                  onTap:(){Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);},
-                ),
-                PremiumFeatureCard(
-                  icon: Icons.image_outlined,
-                  title: ' "\$99/month \n Unlimited access',
-                  color: Colors.pink,
-                  onTap:(){Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);},
+
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: PremiumFeatureCard(
+                        icon: Icons.image_outlined,
+                        title: ' "\$199/month \n Unlimited access',
+                        color: Colors.pink,
+                        onTap:(){
+                          if (UsercurrentSubscription == 3){
+                            mUtils.toastMessage(
+                                "You already have this package scripted ");
+
+
+                          }else{
+
+                            showBottomModal(context,"Do you really want to subscribed for the Unlimited access at \$199",3, 199);
+                       //     Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);
+                          }
+                         },
+                      ),
+                    ),
+
+                    UsercurrentSubscription==3?Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+
+                        child: Row(
+                          children: [
+                            Icon(Icons.check_circle, color: CupertinoColors.activeGreen,size: 30,),
+                            Text("Your active package", style: TextStyle(color: CupertinoColors.activeGreen,),)
+                          ],
+                        ),
+                      ),
+                    ):SizedBox(height: 0,),
+                  ],
                 ),
                 PremiumFeatureCard(
                   icon: Icons.arrow_forward,
                   title: 'Read More',
                   color: Colors.green,
-                  onTap:(){Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen);},
+                  onTap:(){},
                 ),
               ],
             ),
@@ -119,6 +243,155 @@ class UpgradeToPremiumScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> callUserSubScription() async {
+
+    print("sdfdsfdsfsdfs");
+    UserHiveModel hiveUser = await userBox.get("currentUser");
+       GeneralResponse response = await   viewmodel.getSubscription(hiveUser.getUserId);
+
+
+       if (response.code == 200){
+
+         UsercurrentSubscription = response.data["subscription_type"];
+         print(UsercurrentSubscription);
+         setState(() {
+
+         });
+       }else{
+         mUtils.toastMessage(response.message);
+
+       }
+
+  }
+
+  void showBottomModal(BuildContext context, String text, int packageSubcriped, int amount ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Confirm Change",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close modal
+                      },
+                      child: const Text("No"),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.pop(context); // Close modal
+                        // API call
+                        getKeyFromAPI(amount, packageSubcriped);
+                      },
+                      child: const Text("Yes"),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  getKeyFromAPI(int amount, int subscriptionpakage) async {
+   GeneralResponse response = await  viewmodel.getKeyFromAPI(amount);
+   if (response.code == 200){
+     String client_secrete = response.data["clientSecret"];
+
+     if (kDebugMode){
+       print(client_secrete);
+     }
+
+     makePayment(client_secrete, amount, subscriptionpakage);
+   }else {
+
+     mUtils.toastMessage(response.message);
+   }
+
+  }
+
+  Future<void> makePayment(String  clientSecret, int amount, int subscriptionpakage) async {
+    try {
+      amount = amount *10000;
+
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Michale GPT',
+        ),
+      );
+
+      await Stripe.instance.presentPaymentSheet();
+
+
+
+      callupgradeDBapi( amount,  subscriptionpakage);
+    } catch (e) {
+      print("Payment Failed: $e");
+      mUtils.toastMessage(e.toString());
+
+    }
+  }
+
+
+  callupgradeDBapi(int amount, int subscriptionpakage) async {
+    UserHiveModel hiveUser = await userBox.get("currentUser");
+
+ var model =   PaymentModel(paymentType: 1, amount: amount, transactionId: '', transCreatedAt: DateTime.now(), transStatus: 0, subscriptionId:subscriptionpakage , userId: hiveUser.getUserId);
+      GeneralResponse response = await viewmodel.upgradeSubscription(model);
+
+ if (response!=null){
+   if (response.code == 200){
+
+     if (response.data!= {}) {
+       PaymentModel pmodel = PaymentModel.fromJson(response.data);
+       UsercurrentSubscription = pmodel.subscriptionId;
+       setState(() {
+
+       });
+      hiveUser.setSubscriptionId(UsercurrentSubscription);
+      hiveUser.setSubscriptionFriendlyName(UsercurrentSubscription==1?"Free Trail":UsercurrentSubscription==2?"Standard":UsercurrentSubscription==3?"Premium+":"");
+
+     }
+     Navigator.pushNamed(context, RouteNames.PremiumSuccessScreen, arguments: {"subscription": UsercurrentSubscription});
+
+   }else {
+     mUtils.toastMessage(response.message);
+   }
+ }
+
   }
 }
 
@@ -165,9 +438,13 @@ class PremiumFeatureCard extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
+
           ],
         ),
       ),
     );
   }
 }
+
+
+
