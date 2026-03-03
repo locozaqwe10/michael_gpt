@@ -1,5 +1,5 @@
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
+import '../../routes/routes_name.dart';
+import '../../utilities/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

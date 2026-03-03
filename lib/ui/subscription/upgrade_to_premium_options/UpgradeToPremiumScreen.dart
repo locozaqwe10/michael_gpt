@@ -1,9 +1,10 @@
-import 'package:custom_chat_gpt/model/general_response.dart';
-import 'package:custom_chat_gpt/model/payment_model.dart';
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/ui/subscription/upgrade_to_premium_options/subscription_viewmodel.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/utilities/utils.dart';
+import 'package:customchatgpt/model/general_response.dart';
+import 'package:customchatgpt/model/payment_model.dart';
+import 'package:customchatgpt/routes/routes_name.dart';
+import 'package:customchatgpt/ui/subscription/upgrade_to_premium_options/subscription_viewmodel.dart';
+import 'package:customchatgpt/utilities/colors.dart';
+import 'package:customchatgpt/utilities/utils.dart';
+import 'package:customchatgpt/ui/subscription/upgrade_to_premium_options/subscription_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

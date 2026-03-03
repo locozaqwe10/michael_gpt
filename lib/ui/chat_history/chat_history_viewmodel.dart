@@ -1,5 +1,5 @@
-import 'package:custom_chat_gpt/data/chat_history_model.dart';
-import 'package:custom_chat_gpt/repository/api_repository.dart';
+import '../../data/chat_history_model.dart';
+import '../../repository/api_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 

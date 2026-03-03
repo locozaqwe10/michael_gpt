@@ -1,4 +1,7 @@
-import 'package:custom_chat_gpt/repository/api_repository.dart';
+import '../../repository/api_repository.dart';
+
+import '../../model/general_response.dart';
+import '../../repository/api_repository.dart';
 
 import '../../model/general_response.dart';
 

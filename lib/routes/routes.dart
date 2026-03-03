@@ -1,7 +1,8 @@
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/ui/chat_screen/chat_sreen.dart';
-import 'package:custom_chat_gpt/ui/login_screen/login_screen.dart';
-import 'package:custom_chat_gpt/ui/profile_screen/profile_screen.dart';
+import '../routes/routes_name.dart';
+import '../ui/chat_screen/chat_sreen.dart';
+import '../ui/login_screen/login_screen.dart';
+import '../ui/profile_screen/profile_screen.dart';
+import 'package:customchatgpt/routes/routes_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

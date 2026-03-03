@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/utilities/hive/user_hive_model.dart';
+import '../../routes/routes_name.dart';
+import '../../utilities/colors.dart';
+import '../../utilities/hive/user_hive_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

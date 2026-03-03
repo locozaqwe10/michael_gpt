@@ -1,7 +1,7 @@
-import 'package:custom_chat_gpt/data/chat_history_model.dart';
-import 'package:custom_chat_gpt/data/response/status.dart';
-import 'package:custom_chat_gpt/ui/chat_history/chat_history_viewmodel.dart';
-import 'package:custom_chat_gpt/utilities/APP_CODES.dart';
+import '../../data/chat_history_model.dart';
+import '../../data/response/status.dart';
+import '../../ui/chat_history/chat_history_viewmodel.dart';
+import '../../utilities/APP_CODES.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';

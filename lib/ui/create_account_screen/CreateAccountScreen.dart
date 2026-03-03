@@ -1,7 +1,7 @@
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/ui/create_account_screen/create_account_viewmodel.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/utilities/utils.dart';
+import '../../routes/routes_name.dart';
+import '../../ui/create_account_screen/create_account_viewmodel.dart';
+import '../../utilities/colors.dart';
+import '../../utilities/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/social_button.dart';

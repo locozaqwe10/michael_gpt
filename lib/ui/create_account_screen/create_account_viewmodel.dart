@@ -1,5 +1,5 @@
-import 'package:custom_chat_gpt/model/general_response.dart';
-import 'package:custom_chat_gpt/repository/api_repository.dart';
+import '../../model/general_response.dart';
+import '../../repository/api_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 

@@ -1,12 +1,13 @@
 import 'dart:convert';
 
-import 'package:custom_chat_gpt/data/api_urls.dart';
-import 'package:custom_chat_gpt/model/general_response.dart';
-import 'package:custom_chat_gpt/model/payment_model.dart';
+
 import 'package:http/http.dart';
 
+import '../data/api_urls.dart';
 import '../data/network/Network_api_service.dart';
 import '../data/network/base_api_services.dart';
+import '../model/general_response.dart';
+import '../model/payment_model.dart';
 
 class ApiRepository {
   final BaseApiService _apiService = NetworkApiService();

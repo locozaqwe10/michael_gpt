@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/ui/chat_screen/chat_screen_viewmodel.dart';
-import 'package:custom_chat_gpt/utilities/APP_CODES.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/utilities/utils.dart';
+import '../../routes/routes_name.dart';
+import '../../ui/chat_screen/chat_screen_viewmodel.dart';
+import '../../utilities/APP_CODES.dart';
+import '../../utilities/colors.dart';
+import '../../utilities/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

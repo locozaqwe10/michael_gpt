@@ -1,4 +1,4 @@
-package com.custom.chatgpt.custom_chat_gpt
+package com.custom.customchatgpt
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

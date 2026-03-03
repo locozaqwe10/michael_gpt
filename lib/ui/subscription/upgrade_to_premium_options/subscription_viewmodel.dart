@@ -1,6 +1,6 @@
-import 'package:custom_chat_gpt/model/general_response.dart';
-import 'package:custom_chat_gpt/model/payment_model.dart';
-import 'package:custom_chat_gpt/repository/api_repository.dart';
+import 'package:customchatgpt/model/general_response.dart';
+import 'package:customchatgpt/model/payment_model.dart';
+import 'package:customchatgpt/repository/api_repository.dart';
 
 class SubscriptionViewmodel {
 

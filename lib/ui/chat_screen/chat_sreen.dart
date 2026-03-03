@@ -1,6 +1,6 @@
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/widgets/chat_menu.dart';
+import '../../routes/routes_name.dart';
+import '../../utilities/colors.dart';
+import '../../widgets/chat_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

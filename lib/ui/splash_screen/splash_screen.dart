@@ -1,4 +1,4 @@
-import 'package:custom_chat_gpt/routes/routes_name.dart';
+import '../../routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

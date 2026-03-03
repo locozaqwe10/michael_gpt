@@ -1,8 +1,8 @@
-import 'package:custom_chat_gpt/model/login_model.dart';
-import 'package:custom_chat_gpt/routes/routes_name.dart';
-import 'package:custom_chat_gpt/ui/login_screen/login_screen_viewmodel.dart';
-import 'package:custom_chat_gpt/utilities/colors.dart';
-import 'package:custom_chat_gpt/utilities/utils.dart';
+import '../../model/login_model.dart';
+import '../../routes/routes_name.dart';
+import '../../ui/login_screen/login_screen_viewmodel.dart';
+import '../../utilities/colors.dart';
+import '../../utilities/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';

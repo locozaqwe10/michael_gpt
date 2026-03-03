@@ -1,4 +1,4 @@
-import 'package:custom_chat_gpt/utilities/colors.dart';
+import '/utilities/colors.dart';
 import 'package:flutter/material.dart';
 
 /// Creates a circular avatar with the first letter of the given name.

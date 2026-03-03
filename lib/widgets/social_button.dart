@@ -1,5 +1,5 @@
 
-import 'package:custom_chat_gpt/utilities/colors.dart';
+import '/utilities/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
