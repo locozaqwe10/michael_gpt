@@ -1,17 +1,12 @@
-name: Flutter CI (Android + iOS)
-
 on:
-  pull_request:
-    branches: [main, master, iosbr]
   push:
-    branches: [main, master, develop, iosbr]
+    branches: [main, iosbr]
   workflow_dispatch:
 
 jobs:
   ios:
     name: iOS Release Build
     runs-on: macos-latest
-    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
 
     steps:
       - uses: actions/checkout@v4
@@ -21,17 +16,11 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Flutter doctor
-        run: flutter doctor -v
+      - run: flutter pub get
 
-      - name: Get dependencies
-        run: flutter pub get
+      - run: flutter build ipa --release --no-codesign
 
-      - name: Build IPA (Release, no codesign)
-        run: flutter build ipa --release --no-codesign
-
-      - name: Upload IPA Artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
           path: build/ios/ipa/*.ipa
