@@ -4,13 +4,10 @@ on:
   pull_request:
     branches: [main, master, iosbr]
   push:
-    branches: [main, master, develop, isobr]
+    branches: [main, master, develop, iosbr]
   workflow_dispatch:
 
 jobs:
-  # =========================
-  # ANDROID BUILD (UBUNTU)
-  # =========================
   ios:
     name: iOS Release Build
     runs-on: macos-latest
@@ -30,5 +27,11 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build iOS (Release, no codesign)
-        run: flutter build ios --release --no-codesign
+      - name: Build IPA (Release, no codesign)
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: build/ios/ipa/*.ipa
