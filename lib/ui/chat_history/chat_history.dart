@@ -198,7 +198,7 @@ class _ChatHistoryScreen extends State {
                                       .messages[i]!.role=="a"?AppCodes.CHAT_BOT:AppCodes.CHAT_USER, time: value
                                       .apiChatHistoryNotify
                                       .data![index]
-                                      .messages[i]!.createdAt!.toIso8601String(),
+                                      .messages[i]!.createdAt!.toIso8601String(), firstName: '',
                                   ),
                                 ]
                               ]);

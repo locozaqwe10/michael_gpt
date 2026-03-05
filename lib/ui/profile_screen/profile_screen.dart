@@ -48,7 +48,7 @@ class _ProfileScreen extends State {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            circularAvatar(name: hiveUser.getUserName),
+            circularAvatar(name: hiveUser.getUserName,radius: 50),
             const SizedBox(height: 16),
             _profileInfoCard(),
             const SizedBox(height: 16),

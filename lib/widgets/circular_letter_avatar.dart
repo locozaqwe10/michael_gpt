@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// [textColor] - Optional text color.
 Widget circularAvatar({
   required String name,
-  double radius = 50.0,
+  required double radius ,
   Color backgroundColor =ColorBgBlock,
   Color textColor = Colors.white,
 }) {

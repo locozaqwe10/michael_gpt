@@ -71,7 +71,8 @@ class _ChatList extends State <ChatList> {
                 return ChatBubble(
                   message: msg.message,
                   isMe: msg.isMe,
-                  time: msg.time.toString(),
+                  time: msg.time.toString(), firstName: hiveUser.getUserName,
+
 
                 );
               } else {
