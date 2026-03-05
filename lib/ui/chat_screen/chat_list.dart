@@ -71,7 +71,8 @@ class _ChatList extends State <ChatList> {
                 return ChatBubble(
                   message: msg.message,
                   isMe: msg.isMe,
-                  time: msg.time.toString(),
+                  time: msg.time.toString(), firstName: hiveUser.getUserName,
+
 
                 );
               } else {
@@ -178,7 +179,7 @@ class _ChatList extends State <ChatList> {
 
     if (response.code == 200) {
       setState(() {
-        String data = jsonDecode(response.data["llm_response"])["output"];
+        String data = response.data["llm_response"].toString().isEmpty?"": jsonDecode(response.data["llm_response"])["output"];
         isWaitingResponse = false;
         messages.add(
           ChatMessage(

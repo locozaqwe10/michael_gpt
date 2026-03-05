@@ -74,7 +74,7 @@ class _ChatScreen extends State {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: ColorPrimary),
-              currentAccountPicture:   circularAvatar(name:userName),
+              currentAccountPicture:   circularAvatar(name:userName, radius: 50),
               accountName:  Text(userName +"-", style: TextStyle(fontWeight: FontWeight.bold)),
               accountEmail:  Text(subscriptionName),
             ),
