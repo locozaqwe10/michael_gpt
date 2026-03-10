@@ -5,6 +5,7 @@ import 'package:custom_chat_gpt/ui/profile_screen/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../ui/about_usage_mgpt/about_usage.dart';
 import '../ui/chat_history/chat_history.dart';
 import '../ui/create_account_screen/CreateAccountScreen.dart';
 import '../ui/splash_screen/splash_screen.dart';
@@ -51,6 +52,10 @@ class Routes {
      case RouteNames.PremiumSuccessScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => PremiumSuccessScreen(),
+            settings: settings);
+      case RouteNames.HowToUserMichealGPT:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => AboutUsageScreen(),
             settings: settings);
       default:
         return MaterialPageRoute(

@@ -100,7 +100,13 @@ class _ChatScreen extends State {
               title: const Text("Become Premium Member"),
               onTap: () { Navigator.pushNamed(context, RouteNames.UpgradeToPremiumScreen);},
             ),
+            ListTile(
+              leading: const Icon(Icons.keyboard_double_arrow_right_rounded),
+              title: const Text("How to use MichealGPT?"),
+              onTap: () { Navigator.pushNamed(context, RouteNames.HowToUserMichealGPT);},
+            ),
             const Spacer(),
+
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.redAccent),
