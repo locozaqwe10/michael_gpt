@@ -10,6 +10,7 @@ class RouteNames {
   static const String ChatHistoryScreen = "/userhistory";
   static const String UpgradeToPremiumScreen = "/UpgradeToPremiumScreen";
   static const String PremiumSuccessScreen = "/PremiumSuccessScreen";
+  static const String HowToUserMichealGPT = "/HowToUserMichealGPT";
 
 
 }

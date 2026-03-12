@@ -3,7 +3,11 @@ import '../../ui/create_account_screen/create_account_viewmodel.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:http/http.dart' as box;
 
+import '../../data/api_urls.dart';
+import '../../utilities/hive/user_hive_model.dart';
 import '../../widgets/social_button.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -20,7 +24,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final _confirmPasswordController = TextEditingController();
  final CreateAccountViewmodel createAccountViewmodel = CreateAccountViewmodel();
   bool _isLoading = false;
- 
+  var  box =Hive.box<UserHiveModel>('userBox');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,8 +203,28 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             _isLoading = false;
                           });
                       if (response.code == 200){
-                        mUtils.toastMessage(response.message);
-                        Navigator.pushNamed(context, RouteNames.LoginScreen);
+                        final user = UserHiveModel(
+                          userId: response.data["user_id"],
+                          email: response.data["user_email"],
+                          userName: response.data["user_name"],
+                          subscriptionId: int.parse( response
+                              .data["subscription_type"].toString()),
+                          subscriptionInTokenAllowed: 0,
+                          subscriptionOutTokenAllowed: 0,
+                          userInToken: 0,
+                          userOutToken: 0,
+                          token: response
+                              .data["token"]["access_token"],
+                          subscriptionFriendlyName: response
+                              .data["subscription_type_name"],
+                            imageUrl: ApiUrls.BASE_URL+
+                                response!.data["image_url"].toString().replaceFirst("/", ""),
+                        );
+                        await box.put('currentUser', user);
+
+
+                        Navigator.pushNamed(
+                            context, RouteNames.ChatScreen);
                       }else {
 
                         mUtils.toastMessage(response.message);

@@ -13,16 +13,18 @@ import '../../model/chat_list_model.dart';
 import '../../model/general_response.dart';
 import '../../utilities/hive/user_hive_model.dart';
 import '../../widgets/chat_bubble_message.dart';
+import '../../widgets/preload_chat_questions.dart';
 
 class ChatList extends StatefulWidget {
-  int refresh ;
-   ChatList( this.refresh, {super.key} ) ;
+  int refresh;
+
+  ChatList(this.refresh, {super.key});
 
   @override
   _ChatList createState() => _ChatList();
 }
 
-class _ChatList extends State <ChatList> {
+class _ChatList extends State<ChatList> {
   final List<ChatMessage> messages = [];
   int SessionID = -1;
   final TextEditingController controller = TextEditingController();
@@ -33,130 +35,148 @@ class _ChatList extends State <ChatList> {
   bool isWaitingResponse = false;
   int refresh = 0;
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-
     addChatSession();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if (widget.refresh != refresh){
+    if (widget.refresh != refresh) {
       refresh = widget.refresh;
       messages.clear();
-      setState(() {
-
-      });
+      setState(() {});
     }
-      return Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (messages.length > 0) ...[
+          Container(
+            height: MediaQuery.of(context).size.height - 180,
+            child: ListView.builder(
+              controller: scrollController,
+              padding: const EdgeInsets.all(16),
+              itemCount: messages.length + (isWaitingResponse ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index < messages.length) {
+                  final msg = messages[index];
+                  return ChatBubble(
+                    message: msg.message,
+                    isMe: msg.isMe,
+                    time: msg.time.toString(),
+                    firstName: hiveUser.getUserName,
+                  );
+                } else {
+                  // Loading bubble at bottom
+                  return Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        CircularProgressIndicator(strokeWidth: 2),
+                        const SizedBox(width: 10),
+                        const Text("Thinking..."),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ] else ...[
+          Container(
+            height: MediaQuery.of(context).size.height - 180,
+            child: AskMichaelScreen((value) {
+              _sendMessage(value);
+            }),
+          ),
+        ],
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 100,
+            color: Colors.black,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
 
-        if (messages.length>0)...[
-        Container(
-          height: MediaQuery.of(context).size.height - 200,
-          child: ListView.builder(
-            controller: scrollController,
-            padding: const EdgeInsets.all(16),
-            itemCount: messages.length + (isWaitingResponse ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index < messages.length) {
-                final msg = messages[index];
-                return ChatBubble(
-                  message: msg.message,
-                  isMe: msg.isMe,
-                  time: msg.time.toString(), firstName: hiveUser.getUserName,
-
-
-                );
-              } else {
-                // Loading bubble at bottom
-                return Padding(
-                  padding: const EdgeInsets.all(12),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 13.0, bottom: 30),
                   child: Row(
+                    mainAxisSize:  MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(strokeWidth: 2),
-                      const SizedBox(width: 10),
-                      const Text("Thinking..."),
+                      Expanded(
+                        child: Container(
+                          height: 50,
+
+                          decoration: BoxDecoration(
+                            color: SubColorSecandory,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            border: BoxBorder.all(
+                              color: Colors.white70,
+                              style: BorderStyle.solid,
+                              width: 1,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: TextField(
+                              controller: controller,
+                            style: TextStyle(
+                              backgroundColor: SubColorSecandory,
+                              color: Colors.white
+                            ),
+                              decoration: const InputDecoration(
+                                hintText: "Ask Michael...",
+                                hintStyle: TextStyle(color: Colors.white),
+                                border: InputBorder.none,
+
+                              ),
+                              onSubmitted: (value) {
+                                _sendMessage(controller.text.trim());
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(8),
+
+                        decoration: BoxDecoration(
+                          color: ColorPrimary,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          border: BoxBorder.all(
+                            color: Colors.white70,
+                            style: BorderStyle.solid,
+                            width: 1,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.send),
+                          color: Colors.white70,
+                          onPressed: () {
+                            _sendMessage(controller.text.trim());
+                          },
+                        ),
+                      ),
                     ],
                   ),
-                );
-              }
-            },
-          ),
-        ),
-]else... [
-
-  Container(
-    height: MediaQuery.of(context).size.height-200,
-    margin: EdgeInsets.only(left: 10, right: 10),
-    child: Column(
-
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset("assets/images/logo_nobg.png", ),
-        Text("Ask Michael, Your AI Sidekick. Built ",
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold
-        ),),
-        Text(" by Michael Dermer", style: TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-          color: Colors.grey
-    ),),
-        SizedBox(height: 10,),
-        Text("Michael GPT is an AI Sidekick built on the same underlying technology as ChatGPT, but trained specifically on Michael Dermer’s experience, judgment, and TLE’s Survival System. \nIt helps founders decide what matters in the moment — when the stakes are real and guessing is expensive.",
-        textAlign: TextAlign.justify,
-          style: TextStyle(fontSize: 12),
-        )
-      ],
-    ),
-  ),
-        ],
-        Container(
-          margin: EdgeInsets.all(8),
-        decoration:  BoxDecoration(
-            color: CupertinoColors.systemGrey2,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          border: BoxBorder.all(color: Colors.black, style: BorderStyle.solid,width: 2)
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-
-                    decoration: const InputDecoration(
-                      hintText: "Ask Michael...",
-                      border: InputBorder.none,
-                    ),
-                    onSubmitted: (value){
-                      _sendMessage(controller.text.trim());
-                    },
-                  ),
                 ),
-                IconButton(icon: const Icon(Icons.send), onPressed:() {_sendMessage(controller.text.trim());}),
               ],
             ),
           ),
         ),
-
       ],
     );
   }
 
   Future<void> _sendMessage(String question) async {
-
     if (question.isEmpty) return;
 
     controller.clear();
@@ -166,7 +186,8 @@ class _ChatList extends State <ChatList> {
         ChatMessage(
           message: question,
           isMe: AppCodes.CHAT_USER,
-          time: DateTime.now(), errorMessage: '',
+          time: DateTime.now(),
+          errorMessage: '',
         ),
       );
       isWaitingResponse = true;
@@ -179,7 +200,9 @@ class _ChatList extends State <ChatList> {
 
     if (response.code == 200) {
       setState(() {
-        String data = jsonDecode(response.data["llm_response"])["output"];
+        String data = response.data["llm_response"].toString().isEmpty
+            ? ""
+            : jsonDecode(response.data["llm_response"])["output"];
         isWaitingResponse = false;
         messages.add(
           ChatMessage(
@@ -191,7 +214,7 @@ class _ChatList extends State <ChatList> {
         );
       });
 
-      _scrollToBottom();
+    //  _scrollToBottom();
     } else {
       isWaitingResponse = false;
       messages.add(
@@ -202,9 +225,7 @@ class _ChatList extends State <ChatList> {
           errorMessage: "",
         ),
       );
-      setState(() {
-
-      });
+      setState(() {});
       showPremiumDialog(context);
     }
   }
@@ -228,7 +249,6 @@ class _ChatList extends State <ChatList> {
     });
 
     return resposne;
-
   }
 
   Future<dynamic> addChatSession() async {
@@ -250,7 +270,6 @@ class _ChatList extends State <ChatList> {
     }
   }
 
-
   void showPremiumDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -264,17 +283,17 @@ class _ChatList extends State <ChatList> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.workspace_premium,
-                    size: 60, color: Colors.amber),
+                const Icon(
+                  Icons.workspace_premium,
+                  size: 60,
+                  color: Colors.amber,
+                ),
 
                 const SizedBox(height: 16),
 
                 const Text(
                   "Free Plan Ended",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
 
                 const SizedBox(height: 10),
@@ -302,7 +321,10 @@ class _ChatList extends State <ChatList> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, RouteNames.UpgradeToPremiumScreen);
+                          Navigator.pushNamed(
+                            context,
+                            RouteNames.UpgradeToPremiumScreen,
+                          );
                         },
                         child: const Text("Upgrade"),
                       ),
@@ -315,6 +337,22 @@ class _ChatList extends State <ChatList> {
           ),
         );
       },
+    );
+  }
+
+  Widget questionButton(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      ),
     );
   }
 }

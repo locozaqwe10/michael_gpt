@@ -33,21 +33,7 @@ class ChatBubble extends StatelessWidget {
               mainAxisAlignment: isMe == AppCodes.CHAT_USER ?MainAxisAlignment.end:MainAxisAlignment.start,
               children: [
 
-                Visibility(
-                  visible:isMe == AppCodes.CHAT_USER ? false:true,
-                  child: CircleAvatar(
-                    backgroundColor: ColorBgBlock,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: FaIcon(
-                        FontAwesomeIcons.robot,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ),
-SizedBox(width: 10,),
+
                 Column(
                   children: [
                     Container(
@@ -56,11 +42,11 @@ SizedBox(width: 10,),
                       constraints: BoxConstraints(maxWidth: MediaQuery
                           .of(context)
                           .size
-                          .width * 0.75),
+                          .width * 0.85),
                       decoration: BoxDecoration(
                         color: isMe == AppCodes.CHAT_USER
                             ? Color(0xFF007AFF)
-                            : ColorPrimary,
+                            : SubColorSecandory,
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(16),
                           topRight: const Radius.circular(16),
@@ -75,9 +61,11 @@ SizedBox(width: 10,),
                         fitContent: true,
 
                         styleSheet: MarkdownStyleSheet(
-                          p: TextStyle(fontSize: 15,  color: isMe == AppCodes.CHAT_USER ? Colors.white : Colors.white, ),
+                          p: TextStyle(fontSize: 18,
+                            color: isMe == AppCodes.CHAT_USER ? Colors.white : Colors.white, ),
                           strong: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.7,
+                            fontWeight: FontWeight.w900,
                             color: isMe == AppCodes.CHAT_USER ? Colors.white : Colors.white,
 
                           ),
@@ -88,7 +76,6 @@ SizedBox(width: 10,),
                   ],
                 ),
                 SizedBox(width: 10,),
-                Visibility(visible:isMe == AppCodes.CHAT_USER ? true:false ,child:  Visibility(child:  circularAvatar(name: firstName, radius: 20),)),
 
               ],
             ),
@@ -107,4 +94,8 @@ SizedBox(width: 10,),
         ),
       );
     }
+
+
   }
+
+

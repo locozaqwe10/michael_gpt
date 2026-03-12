@@ -47,7 +47,7 @@ class _ChatScreen extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: ColorPrimary,
         actionsIconTheme:  IconThemeData(
@@ -74,7 +74,7 @@ class _ChatScreen extends State {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: ColorPrimary),
-              currentAccountPicture:   circularAvatar(name:userName, radius: 50),
+              currentAccountPicture:  hiveUser!.imageUrl.isEmpty?circularAvatar(name:userName, radius: 50):ClipOval(child: Image.network(hiveUser!.imageUrl, height: 100, width: 100,fit: BoxFit.fill,)),
               accountName:  Text(userName +"-", style: TextStyle(fontWeight: FontWeight.bold)),
               accountEmail:  Text(subscriptionName),
             ),
@@ -100,7 +100,13 @@ class _ChatScreen extends State {
               title: const Text("Become Premium Member"),
               onTap: () { Navigator.pushNamed(context, RouteNames.UpgradeToPremiumScreen);},
             ),
+            ListTile(
+              leading: const Icon(Icons.keyboard_double_arrow_right_rounded),
+              title: const Text("How to use MichealGPT?"),
+              onTap: () { Navigator.pushNamed(context, RouteNames.HowToUserMichealGPT);},
+            ),
             const Spacer(),
+
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.redAccent),

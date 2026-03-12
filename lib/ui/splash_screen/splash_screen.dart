@@ -69,11 +69,15 @@ class _SplashScreenState extends State<SplashScreen>
               children: [
                 // Optional logo if available
                 // Image.asset('assets/michael_gpt_logo.png', width: 120),
-                Image.asset("assets/images/logo_nobg.png",
-                width: 300,),
+                Container(
+                  color: Colors.black,
+                  child: Image.asset("assets/images/logo_white_text.png",
+                  width: 300,
+                                 ),
+                ),
                 SizedBox(height: 10),
                 Text(
-                  'Michael GPT',
+                  'MichaelGPT',
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,

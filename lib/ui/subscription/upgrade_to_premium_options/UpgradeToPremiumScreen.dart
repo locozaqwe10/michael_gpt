@@ -119,7 +119,7 @@ class _UpgradeToPremiumScreen extends State {
                 Stack(
                     children: [
                      SizedBox(
-                       width: 200,
+                       width: 230,
                        child: PremiumFeatureCard(
                         icon: Icons.chat_bubble_outline,
                         title: '14 days Free Trail',
@@ -141,7 +141,7 @@ class _UpgradeToPremiumScreen extends State {
                                            ),
                      ),
                       UsercurrentSubscription==1?Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 10.0,top: 5),
                         child: Align(
                           alignment: Alignment.topLeft,
 
@@ -159,7 +159,7 @@ class _UpgradeToPremiumScreen extends State {
                 Stack(
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: 230,
                       child: PremiumFeatureCard(
                         icon: Icons.flash_on,
                         title: "\99/month \n 10,000,000 input and output token per day",
@@ -179,7 +179,7 @@ class _UpgradeToPremiumScreen extends State {
                     ),
 
                     UsercurrentSubscription==2?Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 10.0,top: 5),
                       child: Align(
                         alignment: Alignment.topLeft,
 
@@ -197,7 +197,7 @@ class _UpgradeToPremiumScreen extends State {
                 Stack(
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: 230,
                       child: PremiumFeatureCard(
                         icon: Icons.image_outlined,
                         title: ' "\$199/month \n Unlimited access',
@@ -218,7 +218,7 @@ class _UpgradeToPremiumScreen extends State {
                     ),
 
                     UsercurrentSubscription==3?Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 10.0,top: 5),
                       child: Align(
                         alignment: Alignment.topLeft,
 
@@ -361,7 +361,7 @@ class _UpgradeToPremiumScreen extends State {
       callupgradeDBapi( amount,  subscriptionpakage);
     } catch (e) {
       print("Payment Failed: $e");
-      mUtils.toastMessage(e.toString());
+      mUtils.toastMessage(e.toString().substring(0,25));
 
     }
   }
@@ -425,10 +425,13 @@ class PremiumFeatureCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 26,
-              backgroundColor: color.withOpacity(0.15),
-              child: Icon(icon, color: color, size: 26),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: CircleAvatar(
+                radius: 26,
+                backgroundColor: color.withOpacity(0.15),
+                child: Icon(icon, color: color, size: 26),
+              ),
             ),
             const SizedBox(height: 14),
             Text(
