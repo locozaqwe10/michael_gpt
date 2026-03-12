@@ -35,6 +35,9 @@ class UserHiveModel extends HiveObject {
   @HiveField(9)
   String subscriptionFriendlyName;
 
+  @HiveField(10)
+  String imageUrl;
+
   UserHiveModel({
     required this.userId,
     required this.email,
@@ -46,6 +49,7 @@ class UserHiveModel extends HiveObject {
     required this.userOutToken,
     required this.token ,
     required this.subscriptionFriendlyName,
+    required this.imageUrl
   });
 
   // ==========================
@@ -82,6 +86,9 @@ class UserHiveModel extends HiveObject {
     await save();
   }
 
+
+
+
   Future<void> setSubscriptionId(int value) async {
     subscriptionId = value;
     await save();
@@ -114,6 +121,11 @@ class UserHiveModel extends HiveObject {
 
   Future<void> setSubscriptionFriendlyName (String value) async {
     subscriptionFriendlyName = value;
+    await save();
+  }
+
+  Future<void> setImageUrl (String value) async {
+    imageUrl = value;
     await save();
   }
 }

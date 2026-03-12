@@ -323,4 +323,77 @@ class ApiRepository {
       rethrow;
     }
   }
+
+  Future<GeneralResponse> postUpdateProfile(Map<String, String> data) async {
+    Response response;
+    try {
+      response = await _apiService.getPostApiResponse(
+          ApiUrls.UPDATE_PROFILE, data);
+
+      var jsonResponse = jsonDecode(response.body.toString());
+
+      if (response.statusCode == 200) {
+        return GeneralResponse(
+          message: jsonResponse["message"],
+          user: "",
+          code: response.statusCode,
+          data: jsonResponse["data"],
+        );
+      } else {
+        return GeneralResponse(
+          message: jsonResponse["detail"],
+          user: "",
+          code: response.statusCode,
+          data: {},
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      return GeneralResponse(
+        message: e.toString(),
+        user: "",
+        code: 500,
+        data: {},
+      );
+
+
+    }
+  }
+
+
+  Future<GeneralResponse> getProfileData(String UUID) async {
+    Response response;
+    try {
+      response = await _apiService.getGetResponse(
+          ApiUrls.GET_USER+ UUID);
+
+      var jsonResponse = jsonDecode(response.body.toString());
+
+      if (response.statusCode == 200) {
+        return GeneralResponse(
+          message: jsonResponse["message"],
+          user: "",
+          code: response.statusCode,
+          data: jsonResponse["data"],
+        );
+      } else {
+        return GeneralResponse(
+          message: jsonResponse["detail"],
+          user: "",
+          code: response.statusCode,
+          data: {},
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      return GeneralResponse(
+        message: e.toString(),
+        user: "",
+        code: 500,
+        data: {},
+      );
+
+      rethrow;
+    }
+  }
 }

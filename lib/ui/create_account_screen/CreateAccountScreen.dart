@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as box;
 
+import '../../data/api_urls.dart';
 import '../../utilities/hive/user_hive_model.dart';
 import '../../widgets/social_button.dart';
 
@@ -216,6 +217,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               .data["token"]["access_token"],
                           subscriptionFriendlyName: response
                               .data["subscription_type_name"],
+                            imageUrl: ApiUrls.BASE_URL+
+                                response!.data["image_url"].toString().replaceFirst("/", ""),
                         );
                         await box.put('currentUser', user);
 

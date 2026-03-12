@@ -26,7 +26,7 @@ class UserHiveModelAdapter extends TypeAdapter<UserHiveModel> {
       userInToken: fields[6] as int,
       userOutToken: fields[7] as int,
       token: fields[8] as String? ?? '',
-      subscriptionFriendlyName: fields[9] as String? ?? ''
+      subscriptionFriendlyName: fields[9] as String? ?? '', imageUrl: ''
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../../data/api_urls.dart';
 import '../../utilities/hive/user_hive_model.dart';
 import '../../widgets/social_button.dart';
 
@@ -228,6 +229,8 @@ class _LoginScreen extends State {
                                               .data["token"]["access_token"],
                                           subscriptionFriendlyName: resposne
                                               .data["subscription_type_name"],
+                                          imageUrl: ApiUrls.BASE_URL+
+                                              resposne!.data["image_url"].toString().replaceFirst("/", "")
                                         );
                                         await box.put('currentUser', user);
 
