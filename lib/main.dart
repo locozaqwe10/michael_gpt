@@ -20,6 +20,7 @@ Future<void> main() async {
   Hive.registerAdapter(UserHiveModelAdapter());
   var box = await Hive.openBox<UserHiveModel>('userBox');
   var box2 = await Hive.openBox<dynamic>('keybox');
+
   if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
     Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
     await Stripe.instance.applySettings();

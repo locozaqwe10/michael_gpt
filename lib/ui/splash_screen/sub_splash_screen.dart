@@ -49,13 +49,8 @@ class _SubSplashScreen extends State {
 
     if (keyResponse.code == 200) {
       var keyData = keyResponse.data;
-      List<dynamic> jsonArray = jsonDecode(keyData);
-      jsonArray.map((value) async =>
-      {
-        if (value["key_name"] == Constants.STRIPE_PUBLISH_KEY){
-          await box2.put(Constants.STRIPE_PUBLISH_KEY, (value["key_value"])),
-
-        },});
+      //  Map<String, dynamic> jsonArray = jsonDecode(keyData);
+      await box2.put(Constants.STRIPE_PUBLISH_KEY, (keyData["key_value"]));
       Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
       await Stripe.instance.applySettings();
     } else {
