@@ -396,4 +396,76 @@ class ApiRepository {
       rethrow;
     }
   }
+
+  Future<GeneralResponse> getKeysAll() async {
+    Response response;
+    try {
+      response = await _apiService.getGetResponse(
+          ApiUrls.GET_KEYS_ALL);
+
+      var jsonResponse = jsonDecode(response.body.toString());
+
+      if (response.statusCode == 200) {
+        return GeneralResponse(
+          message: jsonResponse["message"],
+          user: "",
+          code: response.statusCode,
+          data: jsonResponse["data"],
+        );
+      } else {
+        return GeneralResponse(
+          message: jsonResponse["detail"],
+          user: "",
+          code: response.statusCode,
+          data: {},
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      return GeneralResponse(
+        message: e.toString(),
+        user: "",
+        code: 500,
+        data: {},
+      );
+
+      rethrow;
+    }
+  }
+
+  Future<GeneralResponse> getKeybyName(String keyName) async {
+    Response response;
+    try {
+      response = await _apiService.getGetResponse(
+          ApiUrls.GET_KEY_BY_NAME+keyName);
+
+      var jsonResponse = jsonDecode(response.body.toString());
+
+      if (response.statusCode == 200) {
+        return GeneralResponse(
+          message: jsonResponse["message"],
+          user: "",
+          code: response.statusCode,
+          data: jsonResponse["data"],
+        );
+      } else {
+        return GeneralResponse(
+          message: jsonResponse["detail"],
+          user: "",
+          code: response.statusCode,
+          data: {},
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      return GeneralResponse(
+        message: e.toString(),
+        user: "",
+        code: 500,
+        data: {},
+      );
+
+      rethrow;
+    }
+  }
 }

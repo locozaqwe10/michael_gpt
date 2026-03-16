@@ -38,6 +38,8 @@ class UserHiveModel extends HiveObject {
   @HiveField(10)
   String imageUrl;
 
+
+
   UserHiveModel({
     required this.userId,
     required this.email,

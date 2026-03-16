@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:custom_chat_gpt/model/general_response.dart';
 import 'package:custom_chat_gpt/model/payment_model.dart';
 import 'package:custom_chat_gpt/routes/routes_name.dart';
+import 'package:custom_chat_gpt/ui/splash_screen/spashscreen_viewmodel.dart';
 import 'package:custom_chat_gpt/ui/subscription/upgrade_to_premium_options/subscription_viewmodel.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
 import 'package:custom_chat_gpt/utilities/utils.dart';
@@ -9,7 +12,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive/hive.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
+import '../../../utilities/constants.dart';
 import '../../../utilities/hive/user_hive_model.dart';
 
 
@@ -23,6 +27,8 @@ class UpgradeToPremiumScreen extends StatefulWidget{
 class _UpgradeToPremiumScreen extends State {
 
   late Box userBox = Hive.box<UserHiveModel>('userBox');
+
+  var KeyBox =  Hive.box<dynamic>('keybox');
   SubscriptionViewmodel viewmodel = SubscriptionViewmodel();
   int UsercurrentSubscription = -1;
 
@@ -31,7 +37,10 @@ class _UpgradeToPremiumScreen extends State {
     // TODO: implement initState
     super.initState();
     callUserSubScription();
+    checkStripe();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -310,6 +319,7 @@ class _UpgradeToPremiumScreen extends State {
                       onPressed: () async {
                         Navigator.pop(context); // Close modal
                         // API call
+                        amount = amount *100;
                         getKeyFromAPI(amount, packageSubcriped);
                       },
                       child: const Text("Yes"),
@@ -392,6 +402,27 @@ class _UpgradeToPremiumScreen extends State {
    }
  }
 
+  }
+
+  Future<void> checkStripe() async {
+    var box2 = await Hive.openBox<dynamic>('keybox');
+    if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
+      Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
+      await Stripe.instance.applySettings();
+    }else {
+      var keyResponse = await SplashScreenViewmodel().getAPIkey(Constants.STRIPE_PUBLISH_KEY);
+
+
+      if (keyResponse.code == 200) {
+        var keyData = keyResponse.data;
+     //  Map<String, dynamic> jsonArray = jsonDecode(keyData);
+        await box2.put(Constants.STRIPE_PUBLISH_KEY, (keyData["key_value"]));
+        Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
+        await Stripe.instance.applySettings();
+      } else {
+        mUtils.toastMessage(keyResponse.message);
+      }
+    }
   }
 }
 

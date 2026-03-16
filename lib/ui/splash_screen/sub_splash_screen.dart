@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:custom_chat_gpt/routes/routes_name.dart';
+import 'package:custom_chat_gpt/ui/splash_screen/spashscreen_viewmodel.dart';
 import 'package:custom_chat_gpt/utilities/colors.dart';
+import 'package:custom_chat_gpt/utilities/constants.dart';
 import 'package:custom_chat_gpt/utilities/hive/user_hive_model.dart';
+import 'package:custom_chat_gpt/utilities/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:hive/hive.dart';
 
 /*class SubSplashScreen extends StatelessWidget {
@@ -25,6 +30,8 @@ class _SubSplashScreen extends State {
   String assetsLogo = "assets/images/logo_white_text.png";
 
   var box = Hive.box<UserHiveModel>('userBox');
+  var box2 = Hive.box<dynamic>('keybox');
+  var viewModel = SplashScreenViewmodel();
 
   Future<void> _saveuser() async {
     /*final user = UserHiveModel(
@@ -33,6 +40,29 @@ class _SubSplashScreen extends State {
       userName: "Nauman", subscriptionId: '', subscriptionInTokenAllowed: 0, subscriptionOutTokenAllowed: 0, userInToken: 0, userOutToken: 0,
     );
   await box.put('currentUser', user);*/
+
+    if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
+
+    } else{
+      var keyResponse = await viewModel.getAPIkey(Constants.STRIPE_PUBLISH_KEY);
+
+
+    if (keyResponse.code == 200) {
+      var keyData = keyResponse.data;
+      List<dynamic> jsonArray = jsonDecode(keyData);
+      jsonArray.map((value) async =>
+      {
+        if (value["key_name"] == Constants.STRIPE_PUBLISH_KEY){
+          await box2.put(Constants.STRIPE_PUBLISH_KEY, (value["key_value"])),
+
+        },});
+      Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
+      await Stripe.instance.applySettings();
+    } else {
+      mUtils.toastMessage(keyResponse.message);
+    }
+  }
+
   }
 
   @override
