@@ -1,4 +1,6 @@
 
+import 'package:customchatgpt/utilities/constants.dart';
+
 import '/routes/routes.dart';
 import '/routes/routes_name.dart';
 import '/utilities/colors.dart';
@@ -6,18 +8,24 @@ import '/utilities/hive/user_hive_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
-  Stripe.publishableKey = "pk_test_eJPXSKblfi3nnQD2usTHquag00wkJ1ZEIb";
-  await Stripe.instance.applySettings();
+
 
   await Hive.initFlutter();
   Hive.registerAdapter(UserHiveModelAdapter());
-  await Hive.openBox<UserHiveModel>('userBox');
+  var box = await Hive.openBox<UserHiveModel>('userBox');
+  var box2 = await Hive.openBox<dynamic>('keybox');
+
+  if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
+    Stripe.publishableKey = box2.get(Constants.STRIPE_PUBLISH_KEY);
+    await Stripe.instance.applySettings();
+  }
 
   runApp(const MyApp());
 }

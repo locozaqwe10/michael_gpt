@@ -14,5 +14,7 @@ class ApiUrls {
    static String CREATE_PAYMENT_INTENT = "${ApiUrls.BASE_URL}payment/create-payment-intent?amount=";
    static String UPDATE_PROFILE = "${ApiUrls.BASE_URL}users/update-profile";
    static String GET_USER = "${ApiUrls.BASE_URL}users/";
+   static String GET_KEY_BY_NAME = "${ApiUrls.BASE_URL}libKey/getLibKey/name/";
+   static String GET_KEYS_ALL = "${ApiUrls.BASE_URL}getLibKey/all/";
 
 }
