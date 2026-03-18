@@ -24,6 +24,7 @@ class _ChatScreen extends State {
   String subscriptionName = "";
   late Box userBox;
   int refresh = 0;
+  bool hasValidPackage = true;
 
   @override
   initState()  {
@@ -39,6 +40,12 @@ class _ChatScreen extends State {
    hiveUser = await userBox.get("currentUser");
    userName = hiveUser!.getUserName;
    subscriptionName = hiveUser!.getSubscriptionFriendlyName;
+  /* print (hiveUser!.create_at);
+   final now = DateTime.now();
+   final difference = now.difference(hiveUser!.create_at!).inDays;
+   if (subscriptionName == 'free' &&  difference > 14){
+     hasValidPackage = false;
+   }*/
    setState(() {
 
    });
@@ -57,7 +64,7 @@ class _ChatScreen extends State {
           color: Colors.white, // Change drawer icon color here
         ),
         elevation: 0.5,
-        title: const Text("Michael GPT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text("MichaelGPT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         actions: [
           /*Padding(
             padding: const EdgeInsets.only(right: 16.0),
@@ -74,7 +81,8 @@ class _ChatScreen extends State {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: ColorPrimary),
-              currentAccountPicture:  hiveUser!.imageUrl.isEmpty?circularAvatar(name:userName, radius: 50):ClipOval(child: Image.network(hiveUser!.imageUrl, height: 100, width: 100,fit: BoxFit.fill,)),
+              currentAccountPicture:  hiveUser==null?circularAvatar(name:userName, radius: 50)
+                  :hiveUser!.imageUrl!=""?ClipOval(child: Image.network(hiveUser!.imageUrl, height: 100, width: 100,fit: BoxFit.fill,)):circularAvatar(name:userName, radius: 50),
               accountName:  Text(userName +"-", style: TextStyle(fontWeight: FontWeight.bold)),
               accountEmail:  Text(subscriptionName),
             ),

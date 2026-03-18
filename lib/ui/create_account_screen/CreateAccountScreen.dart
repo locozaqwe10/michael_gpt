@@ -219,6 +219,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               .data["subscription_type_name"],
                             imageUrl: ApiUrls.BASE_URL+
                                 response!.data["image_url"].toString().replaceFirst("/", ""),
+                          create_at: DateTime.parse(response.data["created_at"]),
                         );
                         await box.put('currentUser', user);
 

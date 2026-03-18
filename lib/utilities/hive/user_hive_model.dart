@@ -38,6 +38,9 @@ class UserHiveModel extends HiveObject {
   @HiveField(10)
   String imageUrl;
 
+  @HiveField(11)
+  DateTime? create_at;
+
 
 
   UserHiveModel({
@@ -51,7 +54,8 @@ class UserHiveModel extends HiveObject {
     required this.userOutToken,
     required this.token ,
     required this.subscriptionFriendlyName,
-    required this.imageUrl
+    required this.imageUrl,
+    required  this.create_at
   });
 
   // ==========================
@@ -128,6 +132,11 @@ class UserHiveModel extends HiveObject {
 
   Future<void> setImageUrl (String value) async {
     imageUrl = value;
+    await save();
+  }
+
+  Future<void> setCreated_at (DateTime value) async {
+    create_at = value;
     await save();
   }
 }

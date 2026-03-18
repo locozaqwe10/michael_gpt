@@ -35,7 +35,7 @@ class _ChatList extends State<ChatList> {
   late UserHiveModel hiveUser;
   bool isWaitingResponse = false;
   int refresh = 0;
-
+bool hasValidPackage = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -139,7 +139,9 @@ class _ChatList extends State<ChatList> {
 
                               ),
                               onSubmitted: (value) {
+
                                 _sendMessage(controller.text.trim());
+
                               },
                             ),
                           ),
@@ -179,6 +181,9 @@ class _ChatList extends State<ChatList> {
 
   Future<void> _sendMessage(String question) async {
     if (question.isEmpty) return;
+    if (!hasValidPackage){
+      showPremiumDialog(context);
+    }
 
     controller.clear();
 
@@ -270,7 +275,19 @@ class _ChatList extends State<ChatList> {
       }
     }
   }
+Future<void> checkPackageValidity() async {
 
+  //hiveUser = await userBox.get("currentUser");
+
+  String subscriptionName = hiveUser!.getSubscriptionFriendlyName;
+  print (hiveUser!.create_at);
+  final now = DateTime.now();
+  final difference = now.difference(hiveUser!.create_at!).inDays;
+  if (subscriptionName == 'free' &&  difference > 14){
+
+     hasValidPackage = false;
+  }
+}
   void showPremiumDialog(BuildContext context) {
     showDialog(
       context: context,

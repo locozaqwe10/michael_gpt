@@ -230,7 +230,8 @@ class _LoginScreen extends State {
                                           subscriptionFriendlyName: resposne
                                               .data["subscription_type_name"],
                                           imageUrl: ApiUrls.BASE_URL+
-                                              resposne!.data["image_url"].toString().replaceFirst("/", "")
+                                              resposne!.data["image_url"].toString().replaceFirst("/", ""),
+                                          create_at: DateTime.parse(resposne.data["created_at"]),
                                         );
                                         await box.put('currentUser', user);
 
@@ -239,7 +240,7 @@ class _LoginScreen extends State {
                                             context, RouteNames.ChatScreen);
                                       } else {
                                         mUtils.toastMessage(
-                                            resposne.message + "0x00001");
+                                                resposne.message + "0x00001");
                                       }
                                     }
                                     setState(() {
@@ -249,7 +250,7 @@ class _LoginScreen extends State {
                                     setState(() {
                                       _isLoading = false;
                                     });
-                                    mUtils.toastMessage(ex.toString() +"    loginscree 0*00001");
+                                    mUtils.toastMessage(ex.toString());
                                   }
                                   }else {
                                   mUtils.toastMessage("Please fill all required fields");

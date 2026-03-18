@@ -127,7 +127,7 @@ class _FAQWidgetState extends State<FAQWidget> {
                         children: [
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
                             child: Text(
                               item.body,
                               style: const TextStyle(color: Colors.white70),
