@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../routes/routes_name.dart';
 import '../../utilities/colors.dart';
@@ -234,8 +235,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
 
               /// LIST
-              SizedBox(
-                height: 309,
+              Expanded(
                 child: ListView.builder(
                   itemCount: filteredList.length,
                   itemBuilder: (context, index) {
@@ -262,7 +262,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Widget exploreListItem (String title , String desc, String link, IconData icon){
    return InkWell(
-     onTap: (){
+     onTap: () async {
+       final Uri url = Uri.parse('https://blog.lonelyentrepreneur.com/');
+
+       if (!await launchUrl(
+       url,
+       mode: LaunchMode.externalApplication,
+       )) {
+       throw 'Could not launch $url';
+       }
+
 
      },
      child: SizedBox(
