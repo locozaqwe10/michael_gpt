@@ -11,6 +11,8 @@ import '../../widgets/circular_letter_avatar.dart';
 import 'chat_list.dart';
 
 class ChatScreen  extends StatefulWidget{
+  const ChatScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _ChatScreen();
 }
@@ -39,6 +41,12 @@ class _ChatScreen extends State {
    hiveUser = await userBox.get("currentUser");
    userName = hiveUser!.getUserName;
    subscriptionName = hiveUser!.getSubscriptionFriendlyName;
+  /* print (hiveUser!.create_at);
+   final now = DateTime.now();
+   final difference = now.difference(hiveUser!.create_at!).inDays;
+   if (subscriptionName == 'free' &&  difference > 14){
+     hasValidPackage = false;
+   }*/
    setState(() {
 
    });
@@ -57,7 +65,7 @@ class _ChatScreen extends State {
           color: Colors.white, // Change drawer icon color here
         ),
         elevation: 0.5,
-        title: const Text("Michael GPT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text("MichaelGPT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         actions: [
           /*Padding(
             padding: const EdgeInsets.only(right: 16.0),
@@ -74,7 +82,8 @@ class _ChatScreen extends State {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: ColorPrimary),
-              currentAccountPicture:  hiveUser!.imageUrl.isEmpty?circularAvatar(name:userName, radius: 50):ClipOval(child: Image.network(hiveUser!.imageUrl, height: 100, width: 100,fit: BoxFit.fill,)),
+              currentAccountPicture:  hiveUser==null?circularAvatar(name:userName, radius: 50)
+                  :hiveUser!.imageUrl!=""?ClipOval(child: Image.network(hiveUser!.imageUrl, height: 100, width: 100,fit: BoxFit.fill,)):circularAvatar(name:userName, radius: 50),
               accountName:  Text(userName +"-", style: TextStyle(fontWeight: FontWeight.bold)),
               accountEmail:  Text(subscriptionName),
             ),
@@ -134,43 +143,7 @@ class _ChatScreen extends State {
         
         
             ChatList( refresh),
-            // --- INPUT FIELD ---
-          /*  Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-              ),
-              child: SafeArea(
-                child: Row(
-                  children: [
-                    const Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Type a message...",
-                          hintStyle: TextStyle(
-                            color: SubColorSecandory,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: ColorPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.send, color: Colors.white, size: 20),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
+
           ],
         ),
       ),

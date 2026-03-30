@@ -25,7 +25,7 @@ Widget circularAvatar({
       firstLetter,
       style: TextStyle(
         color: textColor,
-        fontSize: radius * 0.8, // Scale font size based on radius
+        fontSize: radius * 0.7, // Scale font size based on radius
         fontWeight: FontWeight.bold,
       ),
     ),

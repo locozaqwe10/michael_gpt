@@ -9,16 +9,22 @@ import '../../data/api_urls.dart';
 import '../../routes/routes_name.dart';
 import '../../utilities/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../utilities/hive/user_hive_model.dart';
 import '../../utilities/utils.dart';
 import '../../widgets/circular_letter_avatar.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatefulWidget{
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _ProfileScreen();
-
 }
 
 class _ProfileScreen extends State {
@@ -45,61 +51,96 @@ class _ProfileScreen extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor:  Colors.black,
 
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ColorPrimary,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text("Profile", style: TextStyle(color: Colors.white)),
 
-        centerTitle: true,
-        actions: [],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            InkWell(
-              onTap: () async {
-                showImageSourceDialog(context, (file, base64) {
-                  print(file.path);
-                  print(base64);
-                  imagePath = file.path;
-                  imageBase64 = base64;
-                  setState(() {});
-                });
-                //   print(image?["file"].toString());
-              },
-              child: imageBase64 != null
-                  ? ClipOval(
-                    child: Image.memory(base64Decode(imageBase64!),height: 100,
-                                    width: 100,
-                                    fit: BoxFit.fill,),
-                  )
-                  : imagePath != null
-                  ? ClipOval(
-                      child: Image.network(
-                         imagePath!,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.fill,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+
+            children: [
+
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                alignment: AlignmentGeometry.topLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "PROFILE",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                    )
-                  : circularAvatar(name: hiveUser.getUserName, radius: 50),
-            ),
-            const SizedBox(height: 16),
-            _profileInfoCard(),
-            const SizedBox(height: 16),
-            _subscriptionCard(context, hiveUser.subscriptionFriendlyName),
-            const SizedBox(height: 24),
-            _logoutButton(),
-          ],
+                      SizedBox(height: 6),
+
+                      Text(
+                        "personalized your MichealGPT",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 5),
+
+              InkWell(
+                onTap: () async {
+                  showImageSourceDialog(context, (file, base64) {
+                    print(file.path);
+                    print(base64);
+                    imagePath = file.path;
+                    imageBase64 = base64;
+                    setState(() {});
+                  });
+                  //   print(image?["file"].toString());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: ColorPrimary,
+                      width: 3,
+                    ),
+                  ),
+                  child: imageBase64 != null
+                      ? ClipOval(
+                        child: Image.memory(base64Decode(imageBase64!),height: 100,
+                                        width: 100,
+                                        fit: BoxFit.fill,),
+                      )
+                      : imagePath != null
+                      ? ClipOval(
+                          child: Image.network(
+                             imagePath!,
+                            height: 120,
+                            width: 120,
+                            fit: BoxFit.fill,
+
+                          ),
+                        )
+                      : circularAvatar(name: hiveUser.getUserName, radius: 50),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _profileInfoCard(),
+              const SizedBox(height: 16),
+              _subscriptionCard(context, hiveUser.subscriptionFriendlyName),
+              const SizedBox(height: 24),
+              _logoutButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -146,7 +187,10 @@ class _ProfileScreen extends State {
   Widget _profileInfoCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDecoration(),
+      decoration: BoxDecoration(
+        color:Colors.grey[900],
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -208,6 +252,7 @@ class _ProfileScreen extends State {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
+                mainAxisAlignment:  MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +276,7 @@ class _ProfileScreen extends State {
                       ),
                     ],
                   ),
-                  Text(
+                 const Text(
                     "Click to update subscription",
                     style: TextStyle(color: ColorPrimary),
                   ),
@@ -265,7 +310,7 @@ class _ProfileScreen extends State {
               child: isUpdating?CircularProgressIndicator(color: Colors.white): const Text(
                 "Update profile",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: SubColorSecandory,
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -311,18 +356,20 @@ class _ProfileScreen extends State {
 
         enabled: isenable,
         filled: true,
-        fillColor: const Color(0xFFF2F2F2),
+        fillColor: SubColorSecandory,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
       ),
+
+      style: TextStyle(color: isenable?  Colors.white: Colors.grey),
     );
   }
 
   BoxDecoration _cardDecoration() {
     return BoxDecoration(
-      color: Colors.white,
+      color: Colors.grey[900],
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(

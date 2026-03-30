@@ -43,7 +43,7 @@ class _SubSplashScreen extends State {
     );
   await box.put('currentUser', user);*/
 
-  /*  if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
+    if (box2.containsKey(Constants.STRIPE_PUBLISH_KEY)) {
 
     } else{
       var keyResponse = await viewModel.getAPIkey(Constants.STRIPE_PUBLISH_KEY);
@@ -58,7 +58,7 @@ class _SubSplashScreen extends State {
     } else {
       mUtils.toastMessage(keyResponse.message);
     }
-  }*/
+  }
 
   }
 
@@ -379,7 +379,7 @@ class _SubSplashScreen extends State {
                                   if (users!.getEmail.isNotEmpty) {
                                     Navigator.pushNamed(
                                       context,
-                                      RouteNames.ChatScreen,
+                                      RouteNames.HomeScreen,
                                     );
                                   } else {
                                     Navigator.pushNamed(

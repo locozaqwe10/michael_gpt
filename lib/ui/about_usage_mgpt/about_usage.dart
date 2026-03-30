@@ -4,9 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/useage_model.dart';
+import '../../utilities/colors.dart';
 import '../../widgets/usage_michealgpt.dart';
 
 class AboutUsageScreen extends StatefulWidget {
+  const AboutUsageScreen({super.key});
+
   @override
   State<StatefulWidget> createState () => _aboutUsage();
 
@@ -50,6 +53,7 @@ class _aboutUsage extends State{
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
+
         child: SingleChildScrollView(
           child: Column(
           
@@ -81,11 +85,19 @@ class _aboutUsage extends State{
           
                       ],
                     ),
-                    ClipOval(
-          
-                      child: Image.asset("assets/images/micheal_dp.png", width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,),
+                    Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        border: BoxBorder.all(color: ColorPrimary, width: 3)
+                      ),
+                      child: ClipOval(
+
+                        child: Image.asset("assets/images/micheal_dp.png", width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+
+                        ),
+                      ),
                     )
                   ],
                 ),

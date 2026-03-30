@@ -45,7 +45,7 @@ class ChatBubble extends StatelessWidget {
                           .width * 0.85),
                       decoration: BoxDecoration(
                         color: isMe == AppCodes.CHAT_USER
-                            ? Color(0xFF007AFF)
+                            ? ColorPrimary//Color(0xFF007AFF)
                             : SubColorSecandory,
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(16),
@@ -66,9 +66,10 @@ class ChatBubble extends StatelessWidget {
                           strong: TextStyle(
                             letterSpacing: 1.7,
                             fontWeight: FontWeight.w900,
-                            color: isMe == AppCodes.CHAT_USER ? Colors.white : Colors.white,
+                            color: isMe == AppCodes.CHAT_USER ? Colors.white : ColorPrimary,
 
                           ),
+                          a: TextStyle(color: Colors.white),
                         ),
                       ),
 

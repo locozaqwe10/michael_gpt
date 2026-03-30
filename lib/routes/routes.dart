@@ -1,6 +1,7 @@
 import '../routes/routes_name.dart';
 import '../ui/about_usage_mgpt/about_usage.dart';
 import '../ui/chat_screen/chat_sreen.dart';
+import '../ui/home_screen/home_screen.dart';
 import '../ui/login_screen/login_screen.dart';
 import '../ui/profile_screen/profile_screen.dart';
 import 'package:customchatgpt/routes/routes_name.dart';
@@ -59,6 +60,8 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => AboutUsageScreen(),
             settings: settings);
+        case RouteNames.HomeScreen:
+        return MaterialPageRoute(builder: (BuildContext context)=> HomeScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) {
