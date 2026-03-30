@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:custom_chat_gpt/routes/routes_name.dart';
 import 'package:custom_chat_gpt/ui/chat_screen/chat_screen_viewmodel.dart';
 import 'package:custom_chat_gpt/utilities/APP_CODES.dart';
@@ -13,19 +12,20 @@ import 'package:hive/hive.dart';
 import '../../model/chat_list_model.dart';
 import '../../model/general_response.dart';
 import '../../utilities/hive/user_hive_model.dart';
+import '../../widgets/ask_micheal_default_widget.dart';
 import '../../widgets/chat_bubble_message.dart';
 import '../../widgets/preload_chat_questions.dart';
 
-class ChatList extends StatefulWidget {
-  int refresh;
+class ChatListNew extends StatefulWidget {
+  int refreshs;
 
-  ChatList(this.refresh, {super.key});
+  ChatListNew(this.refreshs, {Key? key}): super(key: key);
 
   @override
-  _ChatList createState() => _ChatList();
+  _ChatListNEW createState() => _ChatListNEW();
 }
 
-class _ChatList extends State<ChatList> {
+class _ChatListNEW extends State<ChatListNew> {
   final List<ChatMessage> messages = [];
   int SessionID = -1;
   final TextEditingController controller = TextEditingController();
@@ -35,87 +35,131 @@ class _ChatList extends State<ChatList> {
   late UserHiveModel hiveUser;
   bool isWaitingResponse = false;
   int refresh = 0;
-bool hasValidPackage = true;
+  bool hasValidPackage = true;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    print("init");
+messages.clear();
     addChatSession();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.refresh != refresh) {
-      refresh = widget.refresh;
-      messages.clear();
-      setState(() {});
-    }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (messages.length > 0) ...[
-          Container(
-            height: MediaQuery.of(context).size.height - 180,
-            child: ListView.builder(
-              controller: scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: messages.length + (isWaitingResponse ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index < messages.length) {
-                  final msg = messages[index];
-                  return ChatBubble(
-                    message: msg.message,
-                    isMe: msg.isMe,
-                    time: msg.time.toString(),
-                    firstName: hiveUser.getUserName,
-                  );
-                } else {
-                  // Loading bubble at bottom
-                  return Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        CircularProgressIndicator(strokeWidth: 2),
-                        const SizedBox(width: 10),
-                        const Text("Thinking..."),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        ] else ...[
-          Container(
-            height: MediaQuery.of(context).size.height - 180,
-            child: AskMichaelScreen((value) {
-              _sendMessage(value);
-            }),
-          ),
-        ],
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 100,
-            color: Colors.black,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
 
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 13.0, bottom: 30),
-                  child: Row(
-                    mainAxisSize:  MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 50,
+    return Container(
+      color: Colors.black,
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (messages.length > 0) ...[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.62,
+              child: ListView.builder(
+                controller: scrollController,
+                padding: const EdgeInsets.all(16),
+                itemCount: messages.length + (isWaitingResponse ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index < messages.length) {
+                    final msg = messages[index];
+                    return ChatBubble(
+                      message: msg.message,
+                      isMe: msg.isMe,
+                      time: msg.time.toString(),
+                      firstName: hiveUser.getUserName,
+                    );
+                  } else {
+                    // Loading bubble at bottom
+                    return Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        children: [
+                          CircularProgressIndicator(strokeWidth: 2),
+                          const SizedBox(width: 10),
+                          const Text("Thinking..."),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ] else ...[
+            SizedBox(
+              height:MediaQuery.of(context).size.height * 0.62,
+              child: AskMichaelDefaultWidget((value) {
+                _sendMessage(value);
+              }),
+            ),
+          ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 100,
+
+    decoration: BoxDecoration(
+    color: SubColorSecandory,
+    shape: BoxShape.rectangle,
+
+    border: BoxBorder.fromLTRB(top: BorderSide(color: Colors.white12,
+      style: BorderStyle.solid,
+      width: 1,))
+    ),
+
+
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 13.0, bottom: 30),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 50,
+
+                            decoration: BoxDecoration(
+                              color: SubColorSecandory,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              border: BoxBorder.all(
+                                color: Colors.white12,
+                                style: BorderStyle.solid,
+                                width: 1,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: TextField(
+                                controller: controller,
+                                style: TextStyle(
+                                  backgroundColor: SubColorSecandory,
+                                  color: Colors.white,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: "Ask Michael...",
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  border: InputBorder.none,
+                                ),
+                                onSubmitted: (value) {
+                                  _sendMessage(controller.text.trim());
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(8),
 
                           decoration: BoxDecoration(
-                            color: SubColorSecandory,
+                            color: ColorPrimary,
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                             border: BoxBorder.all(
@@ -124,64 +168,29 @@ bool hasValidPackage = true;
                               width: 1,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: TextField(
-                              controller: controller,
-                            style: TextStyle(
-                              backgroundColor: SubColorSecandory,
-                              color: Colors.white
-                            ),
-                              decoration: const InputDecoration(
-                                hintText: "Ask Michael...",
-                                hintStyle: TextStyle(color: Colors.white),
-                                border: InputBorder.none,
-
-                              ),
-                              onSubmitted: (value) {
-
-                                _sendMessage(controller.text.trim());
-
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-
-                        decoration: BoxDecoration(
-                          color: ColorPrimary,
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          border: BoxBorder.all(
+                          child: IconButton(
+                            icon: const Icon(Icons.send),
                             color: Colors.white70,
-                            style: BorderStyle.solid,
-                            width: 1,
+                            onPressed: () {
+                              _sendMessage(controller.text.trim());
+                            },
                           ),
                         ),
-                        child: IconButton(
-                          icon: const Icon(Icons.send),
-                          color: Colors.white70,
-                          onPressed: () {
-                            _sendMessage(controller.text.trim());
-                          },
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Future<void> _sendMessage(String question) async {
     if (question.isEmpty) return;
-    if (!hasValidPackage){
+    if (!hasValidPackage) {
       showPremiumDialog(context);
     }
 
@@ -201,7 +210,7 @@ bool hasValidPackage = true;
 
     _scrollToBottom();
 
-    // 🔥 CALL YOUR LLM API HERE
+    //  CALL YOUR LLM API HERE
     final response = await callLLM(question);
 
     if (response.code == 200) {
@@ -220,7 +229,7 @@ bool hasValidPackage = true;
         );
       });
 
-    //  _scrollToBottom();
+      //  _scrollToBottom();
     } else {
       isWaitingResponse = false;
       messages.add(
@@ -269,25 +278,26 @@ bool hasValidPackage = true;
       if (response.code == 200) {
         SessionID = response.data[0]["id"];
         messages.clear();
+        if (!mounted) return;
         setState(() {});
       } else {
         mUtils.toastMessage("session could not be added.");
       }
     }
   }
-Future<void> checkPackageValidity() async {
 
-  //hiveUser = await userBox.get("currentUser");
+  Future<void> checkPackageValidity() async {
+    //hiveUser = await userBox.get("currentUser");
 
-  String subscriptionName = hiveUser!.getSubscriptionFriendlyName;
-  print (hiveUser!.create_at);
-  final now = DateTime.now();
-  final difference = now.difference(hiveUser!.create_at!).inDays;
-  if (subscriptionName == 'free' &&  difference > 14){
-
-     hasValidPackage = false;
+    String subscriptionName = hiveUser!.getSubscriptionFriendlyName;
+    print(hiveUser!.create_at);
+    final now = DateTime.now();
+    final difference = now.difference(hiveUser!.create_at!).inDays;
+    if (subscriptionName == 'free' && difference > 14) {
+      hasValidPackage = false;
+    }
   }
-}
+
   void showPremiumDialog(BuildContext context) {
     showDialog(
       context: context,

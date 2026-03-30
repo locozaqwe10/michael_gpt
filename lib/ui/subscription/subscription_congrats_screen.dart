@@ -1,9 +1,11 @@
+import 'package:custom_chat_gpt/ui/chat_screen_new/chat_screen_new.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
 
 import '../../routes/routes_name.dart';
 import '../../utilities/colors.dart';
+import '../home_screen/home_screen.dart';
 
 class PremiumSuccessScreen extends StatefulWidget {
   const PremiumSuccessScreen({super.key});
@@ -48,7 +50,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
 
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FC),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           // 🎉 Top confetti
@@ -109,6 +111,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white
                     ),
                   ),
 
@@ -118,7 +121,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                     "You're Now a Premium Member",
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.deepPurple,
+                      color: Colors.white70,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -155,7 +158,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                               const Text(
                                 'Payment Received',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.bold,color: ColorPrimary
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -178,6 +181,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: ColorPrimary
                     ),
                   ),
 
@@ -204,7 +208,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       gradient: LinearGradient(
-                        colors: [ColorPrimary, Colors.purple],
+                        colors: [ColorPrimary,ColorPrimary],
                       ),
                     ),
                     child: Material(
@@ -212,10 +216,12 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          Navigator.pushNamed(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            RouteNames.ChatScreen,
+                            MaterialPageRoute(builder: (_) => HomeScreen()),
+                                (route) => false,
                           );
+
                           // TODO: handle account creation
                         },
                         child: Center(
@@ -251,7 +257,7 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.white,
+        color: SubColorSecandory,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -262,15 +268,15 @@ class _PremiumSuccessScreenState extends State<PremiumSuccessScreen> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.15),
-            child: Icon(icon, color: color),
+            backgroundColor: ColorPrimary.withOpacity(0.15),
+            child: Icon(icon, color: ColorPrimary),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                 const SizedBox(height: 4),
                 Text(subtitle, style: const TextStyle(color: Colors.grey)),
               ],

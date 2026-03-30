@@ -1,5 +1,6 @@
 import 'package:custom_chat_gpt/routes/routes_name.dart';
 import 'package:custom_chat_gpt/ui/chat_screen/chat_sreen.dart';
+import 'package:custom_chat_gpt/ui/home_screen/home_screen.dart';
 import 'package:custom_chat_gpt/ui/login_screen/login_screen.dart';
 import 'package:custom_chat_gpt/ui/profile_screen/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,6 +58,8 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => AboutUsageScreen(),
             settings: settings);
+        case RouteNames.HomeScreen:
+        return MaterialPageRoute(builder: (BuildContext context)=> HomeScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) {

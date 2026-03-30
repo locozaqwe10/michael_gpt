@@ -11,6 +11,8 @@ import '../../widgets/circular_letter_avatar.dart';
 import 'chat_list.dart';
 
 class ChatScreen  extends StatefulWidget{
+  const ChatScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _ChatScreen();
 }
@@ -142,43 +144,7 @@ class _ChatScreen extends State {
         
         
             ChatList( refresh),
-            // --- INPUT FIELD ---
-          /*  Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-              ),
-              child: SafeArea(
-                child: Row(
-                  children: [
-                    const Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Type a message...",
-                          hintStyle: TextStyle(
-                            color: SubColorSecandory,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: ColorPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.send, color: Colors.white, size: 20),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
+
           ],
         ),
       ),

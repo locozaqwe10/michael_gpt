@@ -11,6 +11,7 @@ class RouteNames {
   static const String UpgradeToPremiumScreen = "/UpgradeToPremiumScreen";
   static const String PremiumSuccessScreen = "/PremiumSuccessScreen";
   static const String HowToUserMichealGPT = "/HowToUserMichealGPT";
+  static const String HomeScreen = "/HomeScreen";
 
 
 }

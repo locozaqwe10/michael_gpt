@@ -30,7 +30,7 @@ class _LoginScreen extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xFFF7F8FC),
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
@@ -39,7 +39,7 @@ class _LoginScreen extends State {
 
 
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
@@ -48,20 +48,23 @@ class _LoginScreen extends State {
 
 
                   SizedBox(
-                    height: 110,
+                    height: 140,
                     child: Column(
                       children: [
                         Center(
-                          child: Image.asset("assets/images/logo_nobg.png",
-                            width: 300,),
+                          child: Image.asset("assets/images/logo_white_text.png",
+                            width: 300,
+                          height: 40,),
                         ),
-                       const SizedBox(height: 10,),
+                       const SizedBox(height: 9,),
                         Container(
 
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: ColorSecandory,
+                            border: BoxBorder.all(width: 1, color: Colors.white70.withOpacity(0.3)),
+
+                            color: SubColorSecandory,
                           ),
                           child: Text(
                             'The Lonely Entrepreneure is the solution for every entrepreneur. Our resrouces save your time, money and pain.',
@@ -78,7 +81,7 @@ class _LoginScreen extends State {
                   ),
 
 
-                  SizedBox(height: 50,),
+                  SizedBox(height: 25,),
                   /// Title
                   Flexible(
                     child: Column(
@@ -96,10 +99,10 @@ class _LoginScreen extends State {
 
                         const Text(
                           "Sign in to continue your conversations",
-                          style: TextStyle(color: ColorPrimary),
+                          style: TextStyle(color: Colors.white70),
                         ),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 25),
 
                         /// Google button
                         socialButton(
@@ -107,9 +110,6 @@ class _LoginScreen extends State {
                           text: "Continue with Google",
 
                         ),
-
-                        const SizedBox(height: 12),
-
 
                         const SizedBox(height: 24),
 
@@ -134,12 +134,20 @@ class _LoginScreen extends State {
                             hintText: "your@email.com",
                             prefixIcon: const Icon(Icons.email_outlined, color: ColorPrimary,),
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: SubColorSecandory,
+
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(
+                                color: Colors.white70
+                              )
+
+
                             ),
+                            hintStyle: TextStyle(color: Colors.white)
                           ),
+                          style: TextStyle(color: Colors.white),
+
                         ),
 
                         const SizedBox(height: 16),
@@ -152,12 +160,14 @@ class _LoginScreen extends State {
                             hintText: "Password",
                             prefixIcon: const Icon(Icons.lock_outline, color: ColorPrimary,),
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor:SubColorSecandory,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
+
                             ),
+                              hintStyle: TextStyle(color: Colors.white)
                           ),
+                          style: TextStyle(color: Colors.white),
                         ),
 
                         const SizedBox(height: 12),
@@ -169,7 +179,7 @@ class _LoginScreen extends State {
                             onPressed: () {},
                             child: const Text(
                               "Forgot password?",
-                              style: TextStyle(color: ColorSecandory),
+                              style: TextStyle(color: Colors.white70),
                             ),
                           ),
                         ),
@@ -237,7 +247,7 @@ class _LoginScreen extends State {
 
 
                                         Navigator.pushNamed(
-                                            context, RouteNames.ChatScreen);
+                                            context, RouteNames.HomeScreen);
                                       } else {
                                         mUtils.toastMessage(
                                                 resposne.message + "0x00001");
@@ -262,7 +272,7 @@ class _LoginScreen extends State {
                               child:Center(
                                 child: const Text(
                                   "Sign In",
-                                  style: TextStyle(fontSize: 16, color: Colors.white, fontWeight:  FontWeight.w900),
+                                  style: TextStyle(fontSize: 16, color: SubColorSecandory, fontWeight:  FontWeight.w900),
                                 ),
                               ),
                             ),
@@ -282,7 +292,8 @@ class _LoginScreen extends State {
                             child: const Text.rich(
                               TextSpan(
                                 text: "Don't have an account? ",
-                                style: TextStyle(color: ColorSecandory),
+
+                                style: TextStyle(color: Colors.white70),
                                 children: [
                                   TextSpan(
                                     text: "Sign up",

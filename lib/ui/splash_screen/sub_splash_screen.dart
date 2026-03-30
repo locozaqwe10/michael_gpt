@@ -377,7 +377,7 @@ class _SubSplashScreen extends State {
                                   if (users!.getEmail.isNotEmpty) {
                                     Navigator.pushNamed(
                                       context,
-                                      RouteNames.ChatScreen,
+                                      RouteNames.HomeScreen,
                                     );
                                   } else {
                                     Navigator.pushNamed(

@@ -17,6 +17,8 @@ import '../../../utilities/constants.dart';
 import '../../../utilities/hive/user_hive_model.dart';
 
 class UpgradeToPremiumScreen extends StatefulWidget {
+  const UpgradeToPremiumScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _UpgradeToPremiumScreen();
 }
@@ -39,26 +41,45 @@ class _UpgradeToPremiumScreen extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: ColorPrimary,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Upgrade to Premium',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.black,
+
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Premium badge
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: AlignmentGeometry.topLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Subscriptions",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(height: 6),
+
+                    Text(
+                      "Get premium Features",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -494,9 +515,9 @@ class PremiumFeatureCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
 
         decoration: BoxDecoration(
-          border: Border.all(color: ColorPrimary),
+          border: Border.all(color: Colors.white24),
           borderRadius: BorderRadius.circular(16),
-          color: Colors.grey.shade100,
+          color: SubColorSecandory,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -505,15 +526,15 @@ class PremiumFeatureCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20.0),
               child: CircleAvatar(
                 radius: 26,
-                backgroundColor: color.withOpacity(0.15),
-                child: Icon(icon, color: color, size: 26),
+                backgroundColor: ColorPrimary.withOpacity(0.15),
+                child: Icon(icon, color: ColorPrimary, size: 26),
               ),
             ),
             const SizedBox(height: 14),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
         ),
